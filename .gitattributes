@@ -1,0 +1,4 @@
+src/Deployment/IronPdf.Assets.Universal/zipdata.standard.zip filter=lfs diff=lfs merge=lfs -text
+src/Deployment/IronPdf.Assets.Windows/zipdata.net462.zip filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
