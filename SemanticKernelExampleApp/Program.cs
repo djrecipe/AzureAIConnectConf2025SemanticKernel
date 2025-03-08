@@ -12,17 +12,19 @@ var config = new ConfigurationBuilder()
 // SETUP AI
 var azureEndpoint = config["AzureEndpoint"];
 var apiKey = config["AzureApiKey"];
+var chat_deployment = config["AzureChatDeployment"];
+var embedding_deployment = config["AzureEmbeddingDeployment"];
 var builder = Kernel.CreateBuilder()
                     .AddAzureOpenAITextEmbeddingGeneration(
-                        "example-embedded-deployment-name", azureEndpoint, apiKey)
+                        embedding_deployment, azureEndpoint, apiKey)
                     .AddAzureOpenAIChatCompletion(
-                        "example-chat-deployment-name", azureEndpoint, apiKey);
+                        chat_deployment, azureEndpoint, apiKey);
 var kernel = builder.Build();
 
 // SETUP MEMORY
 var memory_builder = new MemoryBuilder()
                         .WithMemoryStore(new VolatileMemoryStore())
                         .WithAzureOpenAITextEmbeddingGeneration(
-                            "example-embedded-deployment-name", azureEndpoint, apiKey);
+                            embedding_deployment, azureEndpoint, apiKey);
 
 var memory = memory_builder.Build();
