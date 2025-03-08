@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using Microsoft.Extensions.Configuration;
+using SemanticKernelExampleLib.AI;
 
 var config = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
@@ -28,3 +29,7 @@ var memory_builder = new MemoryBuilder()
                             embedding_deployment, azureEndpoint, apiKey);
 
 var memory = memory_builder.Build();
+
+// SETUP AI
+
+AI.Initialize(kernel, memory);
