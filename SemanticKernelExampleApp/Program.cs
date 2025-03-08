@@ -3,10 +3,15 @@ using Microsoft.SemanticKernel.Connectors.Chroma;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
+using Microsoft.Extensions.Configuration;
+
+var config = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
 
 // SETUP AI
-var azureEndpoint = "https://EXAMPLE.openai.azure.com/";
-var apiKey = "abc123";
+var azureEndpoint = config["AzureEndpoint"];
+var apiKey = config["AzureApiKey"];
 var builder = Kernel.CreateBuilder()
                     .AddAzureOpenAITextEmbeddingGeneration(
                         "example-embedded-deployment-name", azureEndpoint, apiKey)
