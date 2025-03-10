@@ -1,11 +1,14 @@
 ﻿using Microsoft.SemanticKernel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.TextToImage;
 
 namespace SemanticKernelExampleLib.AI
 {
@@ -17,6 +20,7 @@ namespace SemanticKernelExampleLib.AI
         private readonly ISemanticTextMemory memory = null;
         private readonly KernelFunction functionSummarize = null;
         private readonly KernelFunction functionChat = null;
+        private readonly ITextToImageService textToImageService = null;
         private string history = "";
         public static void Initialize(Kernel Kernel, ISemanticTextMemory Memory)
         {
@@ -69,6 +73,9 @@ Chat:
 User: {{$userInput}}
 ChatBot: ";
             functionChat = kernel.CreateFunctionFromPrompt(skPrompt, new OpenAIPromptExecutionSettings { MaxTokens = 200, Temperature = 0.8 });
+
+            // set-up text-to-image
+            textToImageService = kernel.GetRequiredService<ITextToImageService>();
 
             // set-up memory
             kernel.ImportPluginFromObject(new TextMemoryPlugin(memory));
@@ -150,6 +157,14 @@ ChatBot: ";
 
             // return result
             return result.ToString();
+        }
+
+        public async Task<byte[]> GenerateImage(string Text, int Width = 1024, int Height = 1024)
+        {
+            var url = await textToImageService.GenerateImageAsync(Text, Width, Height);
+            using WebClient myWebClient = new WebClient();
+            byte[] data = myWebClient.DownloadData(new Uri(url));
+            return data;
         }
     }
 }
