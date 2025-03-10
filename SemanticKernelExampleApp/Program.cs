@@ -40,5 +40,5 @@ var ai = new AI(kernel, memory);
 var summary = await ai.Summarize(text);
 Console.WriteLine($"Summary: {summary}");
 var id = await ai.Memorize(text);
-var result = await ai.Query(id, "What item does Shelly sell down by the sea shore??");
+var result = await ai.Query(id, "What does Shelly sell?");
 Console.WriteLine($"Query: {result}");
